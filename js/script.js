@@ -148,7 +148,7 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     // сделаем так, чтобы модальное окно появлялось через определенное время:
-    // const modalTimerId = setTimeout(openModal, 3000);
+    const modalTimerId = setTimeout(openModal, 3000);
 
     // покажем модальное окно, когда пользователь докрутит страницу вниз:
     function showModalByScroll() {
@@ -166,12 +166,13 @@ window.addEventListener('DOMContentLoaded', () => {
     // Используем классы для карточек:
 
     class MenuCard {
-        constructor(src, alt, title, descr, price, parentSelector) {
+        constructor(src, alt, title, descr, price, parentSelector, ...classes) { // добавили rest-оператор
             this.src = src; // путь к изображению
             this.alt = alt; // альтернатива на случай, если изображение не прогрузилось
             this.title = title; // заголовок
             this.descr = descr; // описание
             this.price = price; // цена
+            this.classes = classes;
             this.parent = document.querySelector(parentSelector); // родитель
             this.transfer = 73; // курс рубля и доллара
             this.changeToRub();
@@ -185,17 +186,22 @@ window.addEventListener('DOMContentLoaded', () => {
         // сформируем верстку
         render() {
             const element = document.createElement('div');
+            if (this.classes.length === 0) { // проверяем на условие того, что classes не пустой
+                this.element = 'menu__item';
+                element.classList.add(this.element);
+            } else {
+                this.classes.forEach(className => element.classList.add(className));
+            }
+            
             // скопировал из HTML
             element.innerHTML = ` 
-                <div class="menu__item">
-                    <img src=${this.src} alt=${this.alt}>
-                    <h3 class="menu__item-subtitle">${this.title}</h3>
-                    <div class="menu__item-descr">${this.descr}</div>
-                    <div class="menu__item-divider"></div>
-                    <div class="menu__item-price">
-                        <div class="menu__item-cost">Цена:</div>
-                        <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
-                    </div>
+                <img src=${this.src} alt=${this.alt}>
+                <h3 class="menu__item-subtitle">${this.title}</h3>
+                <div class="menu__item-descr">${this.descr}</div>
+                <div class="menu__item-divider"></div>
+                <div class="menu__item-price">
+                    <div class="menu__item-cost">Цена:</div>
+                    <div class="menu__item-total"><span>${this.price}</span> руб/день</div>
                 </div>
             `;
             this.parent.append(element);
@@ -209,7 +215,8 @@ window.addEventListener('DOMContentLoaded', () => {
         'Меню "Фитнес"',
         'Меню "Фитнес" - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством!',
         9, 
-        '.menu .container'
+        '.menu .container', // class, куда помещаем
+        'menu__item'
     ).render();
 
     new MenuCard(
@@ -218,7 +225,8 @@ window.addEventListener('DOMContentLoaded', () => {
         'Меню “Премиум”',
         'В меню “Премиум” мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд. Красная рыба, морепродукты, фрукты - ресторанное меню без похода в ресторан!',
         15, 
-        '.menu .container'
+        '.menu .container',
+        'menu__item' // class, куда помещаем
     ).render();
 
     new MenuCard(
@@ -227,7 +235,9 @@ window.addEventListener('DOMContentLoaded', () => {
         'Меню "Постное"',
         'Меню “Постное” - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.',
         11, 
-        '.menu .container'
+        '.menu .container',
+        'menu__item', // class, куда помещаем
+        'example' // добавим сюда ещё один класс, чтобы проверить работу rest оператора
     ).render();
 });
 
