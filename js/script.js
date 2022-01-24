@@ -239,6 +239,64 @@ window.addEventListener('DOMContentLoaded', () => {
         'menu__item', // class, куда помещаем
         'example' // добавим сюда ещё один класс, чтобы проверить работу rest оператора
     ).render();
+
+
+    // GET и POST запросы с помощью XMLHttpsRequest
+
+    // Forms 
+    const forms = document.querySelectorAll('form');
+    
+    const message = {
+        loading: 'Загрузка', 
+        success: 'Спасибо, мы с вами свяжемся!',
+        failure: 'Что-то пошло не так..'
+    };
+
+    forms.forEach(item => {
+        postData(item);
+    })
+
+    function postData(form) {
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // отменяем стандартное поведение, чтобы не обновлялась страница при sumbit
+
+            const statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            statusMessage.textContent = message.loading;
+            form.append(statusMessage);
+
+            const request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
+
+            request.setRequestHeader('Content-type', 'application/json');
+            // request.setRequestHeader('Content-type', 'multipart/form-data'); // второй аргумент такой - чтобы работать с объектом FormData
+            // formData - специальный объект, который позволяет собрать все данные, которые ввел пользователь
+            const formData = new FormData(form);
+
+            const object = {};
+            formData.forEach(function(value, key) {
+                object.key = value;
+            });
+
+            const json = JSON.stringify(object);
+
+
+            request.send(json);
+
+            request.addEventListener('load', () => {
+                if (request.status === 200) {
+                    console.log(request.response);
+                    statusMessage.textContent = message.success;
+                    form.reset(); // сброс формы;
+                    setTimeout(() => {
+                        statusMessage.remove();
+                    }, 2000);
+                } else {
+                    statusMessage.textContent = message.failure;
+                }
+            });
+        });
+    }
 });
 
 
