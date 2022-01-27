@@ -1,6 +1,10 @@
-function forms() {
+import {closeModal, openModal} from './modal';
+import {postData} from '../services/services';
+
+
+function forms(formSelector, modalTimerId) {
     // Forms 
-    const forms = document.querySelectorAll('form');
+    const forms = document.querySelectorAll(formSelector);
     
     const message = {
         loading: '/icons/spinner.svg', 
@@ -11,18 +15,6 @@ function forms() {
     forms.forEach(item => {
         bindPostData(item);
     })
-
-    // оборачиваем обращение к серверу в функцию, используя перевод из асинхронного кода в синхронный
-    //async/await - парные операторы, всегда используются вместе
-    const postData = async (url, data) => { // async - говорим, что внутри функции будет асинхронный код
-        const result = await fetch(url, { // await - перед операциями, которые необходимо дождаться
-            method: "POST",
-            headers: {'Content-type': 'application/json'},
-            body: data
-        });
-
-        return await result.json(); // дожидаемся перевода в обычный объект и только потом return
-    };
 
     function bindPostData(form) {
         form.addEventListener('submit', (e) => {
@@ -69,7 +61,7 @@ function forms() {
         const prevModalDialog = document.querySelector('.modal__dialog');
 
         prevModalDialog.classList.add('hide');
-        openModal();
+        openModal('.modal', modalTimerId);
 
         const thanksModal = document.createElement('div');
         thanksModal.classList.add('modal__dialog');
@@ -85,9 +77,9 @@ function forms() {
             thanksModal.remove();
             prevModalDialog.classList.remove('hide');
             prevModalDialog.classList.add('show');
-            closeModal();
+            closeModal('.modal');
         }, 4000);
     }
 }
 
-module.exports = forms;
+export default forms;

@@ -1,8 +1,4 @@
-function timer() {
-    // Timer
-
-    const deadline = '2021-10-30';
-
+function timer(id, deadline) {
     // функция, чтобы находить разницу времени между дедлайном и тукущим временем;
     function getTimeRemaining(endtime) {
         const t = Date.parse(endtime) - Date.parse(new Date()),
@@ -59,7 +55,7 @@ function timer() {
 
     }
     
-    setClock('.timer', deadline);
+    setClock(id, deadline);
 }
 
-module.exports = timer;
+export default timer;

@@ -1,8 +1,8 @@
-function tabs() {
+function tabs(tabsSelector, tabsContentSelector, tabsParentSelector, activeClass) {
     // Tabs
-    const tabs = document.querySelectorAll('.tabheader__item'),
-    tabsContent = document.querySelectorAll('.tabcontent'),
-    tabsParent = document.querySelector('.tabheader__items');
+    const tabs = document.querySelectorAll(tabsSelector),
+    tabsContent = document.querySelectorAll(tabsContentSelector),
+    tabsParent = document.querySelector(tabsParentSelector);
 
     // скрываем все ненужные табы:
     function hideTabContent() {
@@ -13,7 +13,7 @@ function tabs() {
         });
         // удалим класс активности у табов
         tabs.forEach(item => {
-            item.classList.remove('tabheader__item_active'); // точка не ставится, потому что мы и так работаем с классами
+            item.classList.remove(activeClass); // точка не ставится, потому что мы и так работаем с классами
         });
     }
 
@@ -22,7 +22,7 @@ function tabs() {
     // заменили на класс, который ввели в style.css    tabsContent[i].style.display = 'block';
         tabsContent[i].classList.add('show', 'fade');
         tabsContent[i].classList.remove('hide');
-        tabs[i].classList.add('tabheader__item_active');
+        tabs[i].classList.add(activeClass);
     }
 
     hideTabContent();
@@ -32,7 +32,7 @@ function tabs() {
     tabsParent.addEventListener('click', (event) => {
         const target = event.target;
 
-        if (target && target.classList.contains('tabheader__item')) {
+        if (target && target.classList.contains(tabsSelector.slice(1))) {
             tabs.forEach((item, i) => {
                 if (target == item) { // если элемент, на который мы кликнули совпал во время перебора, то сделать:
                     hideTabContent();
@@ -43,4 +43,4 @@ function tabs() {
   });
 }
 
-module.exports = tabs;
+export default tabs;

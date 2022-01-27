@@ -1,3 +1,5 @@
+import {getResource} from '../services/services';
+
 function cards () {
     // Используем классы для карточек:
     class MenuCard {
@@ -43,18 +45,6 @@ function cards () {
         }
     }
 
-    const getResource = async (url) => { // async - говорим, что внутри функции будет асинхронный код
-        const result = await fetch(url);  // await - перед операциями, которые необходимо дождаться
-
-        // свойство ok - говорит, что всё сработало нормально; status - код статуса
-        if (!result.ok) {
-            // объект ошибки
-            throw new Error(`Could not fetch ${url}, status: ${result.status}`); // выкидываем новую ошибку
-        }
-
-        return await result.json(); // дожидаемся перевода в обычный объект и только потом return
-    };
-
     // getResource('http://localhost:3000/menu')
     // .then(data => {
     //     data.forEach(({img, altimg, title, descr, price}) => { // реструктуризация объекта ({свойства объекта})
@@ -70,4 +60,4 @@ function cards () {
         });
 }
 
-module.exports = cards;
+export default cards;
