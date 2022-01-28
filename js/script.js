@@ -1,3 +1,6 @@
+require('es6-promise').polyfill(); // подключили самостоятельно полифиллы
+import 'nodelist-foreach-polyfill';
+
 import tabs from './modules/tabs';
 import modal from './modules/modal';
 import calc from './modules/calc';
@@ -30,4 +33,3 @@ window.addEventListener('DOMContentLoaded', () => {
     });
     timer('.timer', '2022-02-10');
 });
-
